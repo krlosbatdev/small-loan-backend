@@ -35,6 +35,7 @@ export class DocumentProcessor {
     this.processType = type;
     let validType = false;
     let response: any = null;
+    const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
     try {
       // Determine which type of processing to perform
@@ -113,7 +114,7 @@ export class DocumentProcessor {
               console.log();
               dotLine = 0;
             }
-            this.wait(5000);
+            await delay(5000);
             continue;
           }
 
@@ -163,14 +164,6 @@ export class DocumentProcessor {
     }
 
     console.log('Process Document Done!');
-  }
-
-  wait(ms: number) {
-    var start = new Date().getTime();
-    var end = start;
-    while (end < start + ms) {
-      end = new Date().getTime();
-    }
   }
 
   async StoreInS3(response: any) {
@@ -337,7 +330,7 @@ export class DocumentProcessor {
                 console.error(err);
               });
         }
-       
+
         //Put response on pages list
         if (response) {
           pages.push(response);
