@@ -1,0 +1,21 @@
+{
+  "name": "small-loan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "serverless": "^1.67.3",
+    "serverless-bundle": "^1.4.0",
+    "serverless-dotenv-plugin": "^2.3.2",
+    "serverless-offline": "^6.1.4",
+    "serverless-plugin-typescript": "^1.1.9",
+    "typescript": "^3.8.3"
+  }
+}
