@@ -37,6 +37,20 @@
       "env": {
         "STRIPE_SECRET_KEY": "sk_test_l0WrfAW17sREkmxWzn70HMxW00OjEkZnbq"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "run parseJsonS3",
+      "program": "${workspaceFolder}\\node_modules\\serverless\\bin\\serverless",
+      "args": [
+        "invoke",
+        "local",
+        "-f",
+        "parseJsonS3",
+        "--path",
+        "src/mocks/s3.json-parse.event.json"
+      ]
     }
   ]
 }

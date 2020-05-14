@@ -27,8 +27,8 @@ custom:
   # commands. Or fallsback to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so we can use it while testing locally
-  tableName: ${self:custom.stage}-textract
-  tag: 'Small-Loan'
+  tableName: ${self:custom.stage}-small-loan
+  tag: 'small-loan'
   bucket: 'texttract5'
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -39,7 +39,8 @@ provider:
   runtime: nodejs12.x
   region: us-west-2
   stage: dev
-  memorySize: 128
+  memorySize:
+    128
     # 'iamRoleStatements' defines the permission policy for the Lambda function.
   # In this case Lambda functions are granted with permissions to access DynamoDB.
   iamRoleStatements:
@@ -64,6 +65,7 @@ provider:
 
 functions:
   textractS3:
+    timeout: 60
     handler: src/s3-textract.main
     tags:
       App: ${self:custom.tag}
@@ -72,12 +74,10 @@ functions:
     handler: src/s3-jsonparse.main
     # events:
     #   - s3:
-    #       bucket: ${self:custom.bucket}
-    #       event: s3:ObjectCreated:*
-    #       rules:
-    #         - suffix: .pdf
+    #       defined in resources/s3-bucket.yml
     tags:
       App: ${self:custom.tag}
 
 resources:
   - ${file(resources/s3-bucket.yml)}
+  - ${file(resources/dynamodb-table.yml)}
