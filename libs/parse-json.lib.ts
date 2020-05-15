@@ -1,24 +1,18 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as AWS from 'aws-sdk';
 export const db = new AWS.DynamoDB.DocumentClient();
-export const TABLE_NAME = process.env.TABLE_NAME || '';
 export const s3 = new AWS.S3();
 
 // // // //
 // DOC: https://github.com/aeksco/aws-pdf-textract-pipeline
 // DOC: https://docs.aws.amazon.com/textract/latest/dg/examples-extract-kvp.html
 // DOC: https://docs.aws.amazon.com/textract/latest/dg/examples-export-table-csv.html
-export async function getJsonFromS3({ bucket, key }: {
-  bucket: any;
-  key: any;
-}) {
+export async function getJsonFromS3({ bucket, key }: { bucket: any; key: any }) {
   const getObject = (params: any) => {
     return new Promise((resolve, reject) => {
       s3.getObject(params, (err, data) => {
-        if (err)
-          reject(err);
-        else
-          resolve(data.Body);
+        if (err) reject(err);
+        else resolve(data.Body);
       });
     });
   };
@@ -32,16 +26,15 @@ export async function getJsonFromS3({ bucket, key }: {
   return data;
 }
 
-export async function addKeyValuesToDynamoDB(sanitizedKvPairs: {
-  [key: string]: string;
-}) {
+export async function addKeyValuesToDynamoDB(sanitizedKvPairs: { [key: string]: string }) {
   const item: any = {
     customerId: uuidv4(),
     data: sanitizedKvPairs,
   };
   // Defines the params for db.put
+
   const dynamoParams = {
-    TableName: TABLE_NAME,
+    TableName: process.env.tableName!,
     Item: item,
   };
   // Logs DynamoDB params
@@ -77,10 +70,7 @@ export function getSanitizedKeyValues(data: any) {
   return sanitizedKvPairs;
 }
 
-function findValueBlock({ key_block, value_map }: {
-  key_block: any;
-  value_map: any;
-}) {
+function findValueBlock({ key_block, value_map }: { key_block: any; value_map: any }) {
   let value_block = '';
   key_block['Relationships'].forEach((relationship: any) => {
     if (relationship['Type'] == 'VALUE') {
@@ -92,10 +82,7 @@ function findValueBlock({ key_block, value_map }: {
   return value_block;
 }
 
-function getText({ result, blocks_map }: {
-  result: any;
-  blocks_map: any;
-}) {
+function getText({ result, blocks_map }: { result: any; blocks_map: any }) {
   let text = '';
   let word;
   if (result['Relationships']) {
@@ -129,8 +116,7 @@ function getKvMap(resp: any) {
     if (block['BlockType'] == 'KEY_VALUE_SET') {
       if (block['EntityTypes'].includes('KEY')) {
         key_map[block_id] = block;
-      }
-      else {
+      } else {
         value_map[block_id] = block;
       }
     }
@@ -138,7 +124,11 @@ function getKvMap(resp: any) {
   return [key_map, value_map, block_map];
 }
 
-function getKvRelationship({ keyMap, valueMap, blockMap, }: {
+function getKvRelationship({
+  keyMap,
+  valueMap,
+  blockMap,
+}: {
   keyMap: any;
   valueMap: any;
   blockMap: any;
@@ -156,5 +146,3 @@ function getKvRelationship({ keyMap, valueMap, blockMap, }: {
   });
   return kvs;
 }
-
-

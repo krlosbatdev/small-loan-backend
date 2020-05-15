@@ -1,5 +1,5 @@
 
-import { getJsonFromS3, getSanitizedKeyValues, addKeyValuesToDynamoDB } from '../libs/parse-json.event.lib';
+import { getJsonFromS3, getSanitizedKeyValues, addKeyValuesToDynamoDB } from '../libs/parse-json.lib';
 
 export async function main(event: any, context: any) {
   // Logs starting message
