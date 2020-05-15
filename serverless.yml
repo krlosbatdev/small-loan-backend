@@ -29,7 +29,7 @@ custom:
   # Set the table name here so we can use it while testing locally
   tableName: ${self:custom.stage}-small-loan
   tag: 'small-loan'
-  bucket: 'texttract5'
+  bucket: ${self:custom.stage}-small-loan
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
@@ -41,6 +41,12 @@ provider:
   stage: dev
   memorySize:
     128
+    # These environment variables are made available to our functions
+  # under process.env.
+  environment:
+    tableName: ${self:custom.tableName}
+    #stripeSecretKey: ${env:STRIPE_SECRET_KEY} .env is used to store the variables you dont want save in git (password, keys)
+
     # 'iamRoleStatements' defines the permission policy for the Lambda function.
   # In this case Lambda functions are granted with permissions to access DynamoDB.
   iamRoleStatements:
