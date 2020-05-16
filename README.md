@@ -2,7 +2,7 @@
 serverless implementation 
 
 
-![](https://github.com/small-loan-backend/workflows/Master%20CI/CD/badge.svg)
+![](https://github.com/MAN-CAR/serverless-template/workflows/Master%20CI/CD/badge.svg)
 
 ## For code check:
 
