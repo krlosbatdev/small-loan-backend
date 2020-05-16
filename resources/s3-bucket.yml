@@ -1,5 +1,5 @@
 Resources:
-  S3BucketMyBucketDev:
+  S3Bucket:
     DependsOn:
       - TextractS3LambdaPermissionTexttract1S3
       - ParseJsonS3LambdaPermissionTexttract1S3

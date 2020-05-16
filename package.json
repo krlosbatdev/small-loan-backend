@@ -12,7 +12,7 @@
   "devDependencies": {
     "@types/node": "^13.11.1",
     "@types/uuid": "^7.0.3",
-    "serverless": "^1.67.3",
+    "serverless": "^1.71.1",
     "serverless-bundle": "^1.4.0",
     "serverless-dotenv-plugin": "^2.3.2",
     "serverless-offline": "^6.1.4",

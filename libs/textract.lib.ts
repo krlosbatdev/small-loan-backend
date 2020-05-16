@@ -10,7 +10,7 @@ export class DocumentProcessor {
   sns = new AWS.SNS();
   s3 = new AWS.S3();
   jobId = '';
-  roleArn = '';
+  textractRoleArn = '';
   bucket = '';
   document = '';
   sqsQueueUrl = '';
@@ -19,7 +19,8 @@ export class DocumentProcessor {
 
   async main(bucketName: string, documentName: string) {
     //TODO - Change role arn to environment variable
-    this.roleArn = 'arn:aws:iam::124744339772:role/service-role/TextractS3-role-iars313u';
+
+    this.textractRoleArn = process.env.textractRoleArn!; //'arn:aws:iam::124744339772:role/service-role/TextractS3-role-iars313u';
 
     this.bucket = bucketName;
     this.document = documentName;
@@ -49,7 +50,7 @@ export class DocumentProcessor {
               },
             },
             NotificationChannel: {
-              RoleArn: this.roleArn,
+              RoleArn: this.textractRoleArn,
               SNSTopicArn: this.snsTopicArn,
             },
           })
@@ -73,7 +74,7 @@ export class DocumentProcessor {
               },
               FeatureTypes: ['TABLES', 'FORMS'],
               NotificationChannel: {
-                RoleArn: this.roleArn,
+                RoleArn: this.textractRoleArn,
                 SNSTopicArn: this.snsTopicArn,
               },
             })

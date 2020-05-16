@@ -43,13 +43,32 @@ provider:
     128
     # These environment variables are made available to our functions
   # under process.env.
-  environment:
-    tableName: ${self:custom.tableName}
-    #stripeSecretKey: ${env:STRIPE_SECRET_KEY} .env is used to store the variables you dont want save in git (password, keys)
 
-    # 'iamRoleStatements' defines the permission policy for the Lambda function.
+  #stripeSecretKey: ${env:STRIPE_SECRET_KEY} .env is used to store the variables you dont want save in git (password, keys)
+  # 'iamRoleStatements' defines the permission policy for the Lambda function.
   # In this case Lambda functions are granted with permissions to access DynamoDB.
   iamRoleStatements:
+    # - Effect: Allow
+    #   Action:
+    #     - dynamodb:DescribeTable
+    #     - dynamodb:Query
+    #     - dynamodb:Scan
+    #     - dynamodb:GetItem
+    #     - dynamodb:PutItem
+    #     - dynamodb:UpdateItem
+    #     - dynamodb:DeleteItem
+    #   Resource:
+    #     Fn::GetAtt:
+    #       - SmallLoanTable
+    #       - Arn
+    # - Effect: Allow
+    #   Action:
+    #     - 's3:*'
+    #   Resource:
+    #     Fn::GetAtt:
+    #       - S3Bucket
+    #       - Arn
+
     - Effect: Allow
       Action:
         - 's3:*'
@@ -75,6 +94,11 @@ functions:
     handler: src/s3-textract.main
     tags:
       App: ${self:custom.tag}
+    environment:
+      textractRoleArn:
+        Fn::GetAtt:
+          - TextractServiceRole
+          - Arn
 
   parseJsonS3:
     handler: src/s3-jsonparse.main
@@ -83,7 +107,10 @@ functions:
     #       defined in resources/s3-bucket.yml
     tags:
       App: ${self:custom.tag}
+    environment:
+      tableName: ${self:custom.tableName}
 
 resources:
   - ${file(resources/s3-bucket.yml)}
   - ${file(resources/dynamodb-table.yml)}
+  - ${file(resources/iam.yml)}
