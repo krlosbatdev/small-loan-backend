@@ -15,7 +15,7 @@
     "serverless": "^1.71.1",
     "serverless-bundle": "^1.4.0",
     "serverless-dotenv-plugin": "^2.3.2",
-    "serverless-offline": "^6.1.4",
+    "serverless-offline": "^14.4.0",
     "serverless-plugin-typescript": "^1.1.9",
     "typescript": "^3.8.3"
   },
